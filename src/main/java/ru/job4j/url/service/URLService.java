@@ -1,7 +1,8 @@
 package ru.job4j.url.service;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Service;
-import ru.job4j.url.model.Site;
 import ru.job4j.url.model.URL;
 import ru.job4j.url.repository.SiteRepository;
 import ru.job4j.url.repository.URLRepository;
@@ -13,6 +14,8 @@ public class URLService {
     private final StringGenerator generator;
     private final URLRepository urlRepository;
     private final SiteRepository siteRepository;
+    private static final Log log = LogFactory.getLog(
+            URLService.class);
 
     public URLService(StringGenerator generator, URLRepository urlRepository, SiteRepository siteRepository) {
         this.generator = generator;
@@ -27,6 +30,7 @@ public class URLService {
             url.setLink(url.getLink());
             url = urlRepository.save(url);
         }
+        log.info("in saveURL save new URL with get short id: " + url.getShortLink());
         return url;
     }
 
@@ -35,6 +39,8 @@ public class URLService {
         if (temp.getId() != 0) {
             urlRepository.incrementURL(temp.getId());
         }
+        log.info("in getURLByShortLink get URL by short: " + shortLink
+                + " :: " + temp.getLink());
         return temp.getLink();
     }
 

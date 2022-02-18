@@ -1,5 +1,7 @@
 package ru.job4j.url.service;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.job4j.url.model.Site;
@@ -10,6 +12,8 @@ public class SiteService {
     private final SiteRepository siteRepository;
     private final BCryptPasswordEncoder encoder;
     private final StringGenerator generator;
+    private static final Log log = LogFactory.getLog(
+            SiteService.class);
 
     public SiteService(SiteRepository siteRepository, BCryptPasswordEncoder encoder, StringGenerator generator) {
         this.siteRepository = siteRepository;
@@ -25,6 +29,8 @@ public class SiteService {
             siteRepository.save(site);
             site.setPassword(password);
         }
+        log.info("IN saveSite save new site with name: " + site.getName()
+        + "and login: " + site.getLogin());
         return site;
     }
 }
